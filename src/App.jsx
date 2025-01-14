@@ -1,7 +1,7 @@
 function App() {
   return (
     <div>
-      Heloo wold
+      Heloo the wild oasis
     </div>
   )
 }
