@@ -60,7 +60,6 @@ function CabinRow({ cabin }) {
     onError: (err) => {
       toast.error(err.message, {
         duration: 5000,
-        icon: "",
       });
     },
   });
