@@ -52,11 +52,12 @@ function CreateCabinForm() {
     handleSubmit,
     formState: { errors },
     reset,
+    getValues,
   } = useForm();
 
   const queryClient = useQueryClient();
 
-  const { isLoading, mutate } = useMutation({
+  const { isLoading: isAdding, mutate } = useMutation({
     mutationFn: addCabin,
     onSuccess: () => {
       toast.success("Cabin just added!");
@@ -76,8 +77,12 @@ function CreateCabinForm() {
     mutate(formData);
   }
 
+  function onError(errors) {
+    console.log(errors);
+  }
+  console.log(errors);
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
+    <Form onSubmit={handleSubmit(onSubmit, onError)}>
       <FormRow>
         <Label htmlFor="name">Cabin name</Label>
         <Input
@@ -86,7 +91,7 @@ function CreateCabinForm() {
           {...register("name", { required: true })}
         />
         {errors.name?.type === "required" && (
-          <p role="alert">Cabin name is required</p>
+          <Error role="alert">Cabin name is required</Error>
         )}
       </FormRow>
 
@@ -95,10 +100,21 @@ function CreateCabinForm() {
         <Input
           type="number"
           id="maxCapacity"
-          {...register("maxCapacity", { required: true })}
+          {...register("maxCapacity", {
+            required: true,
+            min: 1,
+            max: 9,
+          })}
         />
         {errors.maxCapacity?.type === "required" && (
-          <p role="alert">Max capacity is required</p>
+          <Error role="alert">Max capacity is required</Error>
+        )}
+        {errors.maxCapacity?.type === "min" && (
+          <Error role="alert">Min capacity must be more than 1.</Error>
+        )}
+
+        {errors.maxCapacity?.type === "max" && (
+          <Error role="alert">Max capacity must be less than 9.</Error>
         )}
       </FormRow>
 
@@ -107,10 +123,12 @@ function CreateCabinForm() {
         <Input
           type="number"
           id="regularPrice"
-          {...register("regularPrice", { required: true })}
+          {...register("regularPrice", {
+            required: true,
+          })}
         />
         {errors.regularPrice?.type === "required" && (
-          <p role="alert">Regular price is required</p>
+          <Error role="alert">Regular price is required</Error>
         )}
       </FormRow>
 
@@ -120,8 +138,16 @@ function CreateCabinForm() {
           type="number"
           id="discount"
           defaultValue={0}
-          {...register("discount", { required: true })}
+          {...register("discount", {
+            required: true,
+            validate: (value) =>
+              value++ <= getValues().regularPrice++ ||
+              "Discount must be less than regular price.",
+          })}
         />
+        {errors?.discount?.message && (
+          <Error role="alert">{errors?.discount?.message}</Error>
+        )}
       </FormRow>
 
       <FormRow>
@@ -130,10 +156,12 @@ function CreateCabinForm() {
           type="number"
           id="description"
           defaultValue=""
-          {...register("description", { required: true })}
+          {...register("description", {
+            required: true,
+          })}
         />
         {errors.description?.type === "required" && (
-          <p role="alert">Description is required</p>
+          <Error role="alert">Description is required</Error>
         )}
       </FormRow>
 
@@ -147,7 +175,7 @@ function CreateCabinForm() {
         <Button variation="secondary" type="reset">
           Cancel
         </Button>
-        <Button>Add cabin</Button>
+        <Button disabled={isAdding}>Add cabin</Button>
       </FormRow>
     </Form>
   );
