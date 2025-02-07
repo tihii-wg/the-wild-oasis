@@ -88,11 +88,9 @@ function CreateCabinForm() {
         <Input
           type="text"
           id="name"
-          {...register("name", { required: true })}
+          {...register("name", { required: "This field is required" })}
         />
-        {errors.name?.type === "required" && (
-          <Error role="alert">Cabin name is required</Error>
-        )}
+        {errors?.name?.message && <Error>{errors?.name?.message}</Error>}
       </FormRow>
 
       <FormRow>
@@ -101,20 +99,19 @@ function CreateCabinForm() {
           type="number"
           id="maxCapacity"
           {...register("maxCapacity", {
-            required: true,
-            min: 1,
-            max: 9,
+            required: "This field is required",
+            min: {
+              value: 1,
+              message: "Min capacity must be more than 1",
+            },
+            max: {
+              value: 9,
+              message: "Max capacity must be less than 9",
+            },
           })}
         />
-        {errors.maxCapacity?.type === "required" && (
-          <Error role="alert">Max capacity is required</Error>
-        )}
-        {errors.maxCapacity?.type === "min" && (
-          <Error role="alert">Min capacity must be more than 1.</Error>
-        )}
-
-        {errors.maxCapacity?.type === "max" && (
-          <Error role="alert">Max capacity must be less than 9.</Error>
+        {errors?.maxCapacity?.message && (
+          <Error>{errors?.maxCapacity?.message}</Error>
         )}
       </FormRow>
 
@@ -124,11 +121,11 @@ function CreateCabinForm() {
           type="number"
           id="regularPrice"
           {...register("regularPrice", {
-            required: true,
+            required: "This fiel is required",
           })}
         />
-        {errors.regularPrice?.type === "required" && (
-          <Error role="alert">Regular price is required</Error>
+        {errors.regularPrice?.message && (
+          <Error role="alert">{errors?.regularPrice?.message}</Error>
         )}
       </FormRow>
 
@@ -137,9 +134,8 @@ function CreateCabinForm() {
         <Input
           type="number"
           id="discount"
-          defaultValue={0}
           {...register("discount", {
-            required: true,
+            required: "This field is required",
             validate: (value) =>
               value++ <= getValues().regularPrice++ ||
               "Discount must be less than regular price.",
@@ -157,11 +153,11 @@ function CreateCabinForm() {
           id="description"
           defaultValue=""
           {...register("description", {
-            required: true,
+            required: "This field is required",
           })}
         />
-        {errors.description?.type === "required" && (
-          <Error role="alert">Description is required</Error>
+        {errors.description?.message && (
+          <Error>{errors?.description?.message}</Error>
         )}
       </FormRow>
 
