@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const FormRow = styled.div`
+const StyledFormRow = styled.div`
   display: grid;
   align-items: center;
   grid-template-columns: 24rem 1fr 1.2fr;
@@ -36,18 +36,14 @@ const Error = styled.span`
   color: var(--color-red-700);
 `;
 
-function RowForm() {
+function FormRow({ label, error, children }) {
   return (
-    <FormRow>
-      <Label htmlFor="discount">Discount</Label>
-      <Input
-        type="number"
-        id="discount"
-        defaultValue={0}
-        {...register("discount", { required: true })}
-      />
-    </FormRow>
+    <StyledFormRow>
+      {label && <Label htmlFor={children?.props?.id}>{label}</Label>}
+      {children}
+      {error && <Error>{error}</Error>}
+    </StyledFormRow>
   );
 }
 
-export default RowForm;
+export default FormRow;
