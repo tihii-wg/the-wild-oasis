@@ -1,5 +1,4 @@
 import { useQuery } from "@tanstack/react-query";
-import { useEffect } from "react";
 import styled from "styled-components";
 
 import { getCabins } from "../../services/apiCabins";
