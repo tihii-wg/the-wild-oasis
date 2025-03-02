@@ -7,13 +7,13 @@ import FormRow from "../../ui/FormRow";
 
 import { useForm } from "react-hook-form";
 import { useCreateCabin } from "./useCreateCabin";
-import { useeditCabin } from "./useEditCabin";
+import { useEditCabin } from "./useEditCabin";
 
 function CreateCabinForm({ cabinToEdit = {}, setVisible, setIsEdit }) {
   const { id: editId, ...newCabinValue } = cabinToEdit;
 
   const { createCabin, isCreating } = useCreateCabin();
-  const { updateCabin, isEditing } = useeditCabin();
+  const { updateCabin, isEditing } = useEditCabin();
 
   const isEditSession = Boolean(editId);
 
