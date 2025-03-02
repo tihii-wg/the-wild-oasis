@@ -12,12 +12,13 @@ export async function getCabins() {
 
 export async function editCreateCabin(formData, id) {
   //https://qiaysrzbsxpcwybjzdwd.supabase.co/storage/v1/object/public/cabin-images//cabin-001.jpg
-  const hasImagePath = formData.image?.startsWith?.(supabaseUrl);
 
   const imageName = `${Math.random()}-${formData?.image.name}`.replaceAll(
     "/",
     "",
   );
+
+  const hasImagePath = formData.image?.startsWith?.(supabaseUrl);
 
   const imagePath = hasImagePath
     ? formData.image

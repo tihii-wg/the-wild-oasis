@@ -20,7 +20,7 @@ function Cabins() {
         <Button onClick={() => setVisible((visible) => !visible)}>
           Add cabin
         </Button>
-        {visible && <CreateCabinForm />}
+        {visible && <CreateCabinForm setVisible={setVisible} />}
       </Row>
     </>
   );

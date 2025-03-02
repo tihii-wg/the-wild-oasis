@@ -7,6 +7,7 @@ import { deleteCabin } from "../../services/apiCabins";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
+import { useDeleteCabin } from "./useDeleteCabin";
 
 const TableRow = styled.div`
   display: grid;
@@ -46,28 +47,13 @@ const Discount = styled.div`
   font-weight: 500;
   color: var(--color-green-700);
 `;
+
 /* eslint-disable react/prop-types */
 function CabinRow({ cabin }) {
-  const { id, image, name, maxCapacity, discount, regularPrice } = cabin;
-
+  const { isDisabled, deleteCabin } = useDeleteCabin();
   const [isEdit, setIsEdit] = useState(false);
 
-  const queryClient = useQueryClient();
-
-  const { isLoading: isDisabled, mutate } = useMutation({
-    mutationFn: deleteCabin,
-    onSuccess: () => {
-      toast.success("Succes deletin cabin!");
-      queryClient.invalidateQueries({
-        queryKey: ["cabins"],
-      });
-    },
-    onError: (err) => {
-      toast.error(err.message, {
-        duration: 5000,
-      });
-    },
-  });
+  const { id, image, name, maxCapacity, discount, regularPrice } = cabin;
 
   return (
     <>
@@ -76,10 +62,14 @@ function CabinRow({ cabin }) {
         <Cabin>{name}</Cabin>
         <div>Fits up to {maxCapacity} quests</div>
         <Price>{formatCurrency(regularPrice)}</Price>
-        <Discount>{formatCurrency(discount)}</Discount>
+        {discount ? (
+          <Discount>{formatCurrency(discount)}</Discount>
+        ) : (
+          <span>&mdash;</span>
+        )}
         <div>
           <button onClick={() => setIsEdit((isEdit) => !isEdit)}>Edit</button>
-          <button onClick={() => mutate(id)} disabled={isDisabled}>
+          <button onClick={() => deleteCabin(id)} disabled={isDisabled}>
             Delete
           </button>
         </div>

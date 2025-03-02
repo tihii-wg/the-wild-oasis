@@ -11,8 +11,8 @@ import FormRow from "../../ui/FormRow";
 import { editCreateCabin } from "../../services/apiCabins";
 import { useForm } from "react-hook-form";
 
-function CreateCabinForm({ cabinToEdit = {}, setIsEdit }) {
-  const { id: editId, ...editValues } = cabinToEdit;
+function CreateCabinForm({ cabinToEdit = {}, setVisible, setIsEdit }) {
+  const { id: editId, ...newCabinValue } = cabinToEdit;
 
   const isEditSession = Boolean(editId);
 
@@ -23,7 +23,7 @@ function CreateCabinForm({ cabinToEdit = {}, setIsEdit }) {
     reset,
     getValues,
   } = useForm({
-    defaultValues: isEditSession ? editValues : {},
+    defaultValues: isEditSession ? newCabinValue : {},
   });
 
   const queryClient = useQueryClient();
@@ -44,10 +44,10 @@ function CreateCabinForm({ cabinToEdit = {}, setIsEdit }) {
     },
   });
 
-  const { mutate: updateCabin, isLoading: isUpdating } = useMutation({
-    mutationFn: ({ newCabinData, id }) => editCreateCabin(newCabinData, id),
+  const { mutate: updateCabin, isLoading: isEditing } = useMutation({
+    mutationFn: ({ newCabinValue, id }) => editCreateCabin(newCabinValue, id),
     onSuccess: () => {
-      toast.success("Cabin just updated!");
+      toast.success("Cabin just update!");
       queryClient.invalidateQueries({
         queryKey: ["cabins"],
       });
@@ -60,18 +60,16 @@ function CreateCabinForm({ cabinToEdit = {}, setIsEdit }) {
     },
   });
 
-  const isWorking = isCreating || isUpdating;
-
-  function onSubmit(data) {
-    const image = typeof data.image === "string" ? data.image : data.image[0];
+  function onSubmit(formData) {
+    const image =
+      typeof formData.image === "string" ? formData.image : formData.image[0];
 
     if (isEditSession) {
-      updateCabin({
-        newCabinData: { ...data, image },
-        id: editId,
-      });
+      updateCabin({ newCabinValue: { ...formData, image }, id: editId });
+      setIsEdit((isEdit) => !isEdit);
     } else {
-      createCabin({ ...data, image: image });
+      createCabin({ ...formData, image });
+      setVisible((visible) => !visible);
     }
   }
 
@@ -167,7 +165,7 @@ function CreateCabinForm({ cabinToEdit = {}, setIsEdit }) {
           Cancel
         </Button>
         <Button disabled={isCreating}>
-          {isEditSession ? "Updete cabin" : "Create new cabin"}
+          {isEditSession ? "EditCabin" : "Create new cabin"}
         </Button>
       </FormRow>
     </Form>
