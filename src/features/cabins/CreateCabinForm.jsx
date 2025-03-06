@@ -28,6 +28,7 @@ function CreateCabinForm({ cabinToEdit = {}, setVisible, setIsEdit }) {
   });
 
   function onSubmit(formData) {
+    // console.log(formData);
     const image =
       typeof formData.image === "string" ? formData.image : formData.image[0];
 
