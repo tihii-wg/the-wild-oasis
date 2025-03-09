@@ -7,13 +7,13 @@ import FormRow from "../../ui/FormRow";
 
 import { useForm } from "react-hook-form";
 import { useCreateCabin } from "./useCreateCabin";
-import { useEditCabin } from "./useEditCabin";
+import { useUpdateCabin } from "./useUpdateCabin";
 
 function CreateCabinForm({ cabinToEdit = {}, setVisible, setIsEdit }) {
   const { id: editId, ...newCabinValue } = cabinToEdit;
 
   const { createCabin, isCreating } = useCreateCabin();
-  const { updateCabin, isEditing } = useEditCabin();
+  const { updateCabin, isUpdating } = useUpdateCabin();
 
   const isEditSession = Boolean(editId);
 
@@ -28,7 +28,6 @@ function CreateCabinForm({ cabinToEdit = {}, setVisible, setIsEdit }) {
   });
 
   function onSubmit(formData) {
-    // console.log(formData);
     const image =
       typeof formData.image === "string" ? formData.image : formData.image[0];
 
@@ -45,7 +44,7 @@ function CreateCabinForm({ cabinToEdit = {}, setVisible, setIsEdit }) {
       setVisible((visible) => !visible);
     }
   }
-
+  const isWorking = isCreating || isUpdating;
   // function onError(errors) {
   //   console.log(errors);
   // }
