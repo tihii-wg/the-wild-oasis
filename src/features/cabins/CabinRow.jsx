@@ -51,9 +51,12 @@ const Discount = styled.div`
 function CabinRow({ cabin }) {
   const { id, image, name, maxCapacity, discount, regularPrice, description } =
     cabin;
-  const { isDisabled, deleteCabin } = useDeleteCabin();
-  const [isEdit, setIsEdit] = useState(false);
+  const { isDeleting, deleteCabin } = useDeleteCabin();
   const { isCreating, createCabin } = useCreateCabin();
+
+  const isWorking = isDeleting || isCreating;
+
+  const [isEdit, setIsEdit] = useState(false);
 
   function handleCreate() {
     createCabin({
@@ -85,7 +88,7 @@ function CabinRow({ cabin }) {
           <button onClick={() => setIsEdit((isEdit) => !isEdit)}>
             <HiPencil />
           </button>
-          <button onClick={() => deleteCabin(id)} disabled={isDisabled}>
+          <button onClick={() => deleteCabin(id)} disabled={isWorking}>
             <HiTrash />
           </button>
         </div>

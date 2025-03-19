@@ -9,7 +9,7 @@ import { useForm } from "react-hook-form";
 import { useCreateCabin } from "./useCreateCabin";
 import { useUpdateCabin } from "./useUpdateCabin";
 
-function CreateCabinForm({ cabinToEdit = {}, setVisible, setIsEdit }) {
+function CreateCabinForm({ cabinToEdit = {}, setIsEdit, onCloseModal }) {
   const { id: editId, ...newCabinValue } = cabinToEdit;
 
   const { createCabin, isCreating } = useCreateCabin();
@@ -40,8 +40,8 @@ function CreateCabinForm({ cabinToEdit = {}, setVisible, setIsEdit }) {
         {
           onSuccess: () => reset(),
         },
+        onCloseModal?.(),
       );
-      setVisible((visible) => !visible);
     }
   }
   const isWorking = isCreating || isUpdating;
@@ -50,10 +50,13 @@ function CreateCabinForm({ cabinToEdit = {}, setVisible, setIsEdit }) {
   // }
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
+    <Form
+      onSubmit={handleSubmit(onSubmit)}
+      type={onCloseModal ? "modal" : "regular"}
+    >
       <FormRow label="Cabin name" error={errors?.name?.message}>
         <Input
-          disabled={isCreating}
+          disabled={isWorking}
           type="text"
           id="name"
           {...register("name", { required: "This field is required" })}
@@ -62,7 +65,7 @@ function CreateCabinForm({ cabinToEdit = {}, setVisible, setIsEdit }) {
 
       <FormRow label="Maximum capacity" error={errors?.maxCapacity?.message}>
         <Input
-          disabled={isCreating}
+          disabled={isWorking}
           type="number"
           id="maxCapacity"
           {...register("maxCapacity", {
@@ -81,7 +84,7 @@ function CreateCabinForm({ cabinToEdit = {}, setVisible, setIsEdit }) {
 
       <FormRow label="Regular price" error={errors?.regularPrice?.message}>
         <Input
-          disabled={isCreating}
+          disabled={isWorking}
           type="number"
           id="regularPrice"
           {...register("regularPrice", {
@@ -92,7 +95,7 @@ function CreateCabinForm({ cabinToEdit = {}, setVisible, setIsEdit }) {
 
       <FormRow label="Discount" error={errors?.discount?.message}>
         <Input
-          disabled={isCreating}
+          disabled={isWorking}
           type="number"
           id="discount"
           defaultValue="0"
@@ -122,7 +125,7 @@ function CreateCabinForm({ cabinToEdit = {}, setVisible, setIsEdit }) {
 
       <FormRow label="Cabin photo" error={errors?.image?.message}>
         <FileInput
-          disabled={isCreating}
+          disabled={isWorking}
           id="image"
           accept="image/*"
           {...register("image", {
@@ -133,10 +136,15 @@ function CreateCabinForm({ cabinToEdit = {}, setVisible, setIsEdit }) {
 
       <FormRow>
         {/* type is an HTML attribute! */}
-        <Button variation="secondary" type="reset" disabled={isCreating}>
+        <Button
+          onClick={() => onCloseModal?.()}
+          variation="secondary"
+          type="reset"
+          disabled={isWorking}
+        >
           Cancel
         </Button>
-        <Button disabled={isCreating}>
+        <Button disabled={isWorking}>
           {isEditSession ? "EditCabin" : "Create new cabin"}
         </Button>
       </FormRow>

@@ -1,4 +1,8 @@
 import styled from "styled-components";
+import { HiOutlineX } from "react-icons/hi";
+import CreateCabinForm from "../features/cabins/CreateCabinForm";
+import { HiXMark } from "react-icons/hi2";
+import { cloneElement, createContext, useContext, useState } from "react";
 
 const StyledModal = styled.div`
   position: fixed;
@@ -48,3 +52,42 @@ const Button = styled.button`
     color: var(--color-grey-500);
   }
 `;
+
+const ModalContext = createContext();
+
+function Modal({ children }) {
+  const [openName, setOpenName] = useState("");
+  const closeWindow = () => setOpenName("");
+  const openWindow = setOpenName;
+
+  return (
+    <ModalContext.Provider value={{ openName, openWindow, closeWindow }}>
+      {children}
+    </ModalContext.Provider>
+  );
+}
+
+function Open({ children, open }) {
+  const { openWindow } = useContext(ModalContext);
+  return cloneElement(children, { onClick: () => openWindow(open) });
+}
+
+function Window({ children, name }) {
+  const { openName, closeWindow } = useContext(ModalContext);
+  if (name !== openName) return null;
+  return (
+    <Overlay>
+      <StyledModal>
+        <Button onClick={closeWindow}>
+          <HiXMark />
+        </Button>
+        <div>{cloneElement(children, { onCloseModal: closeWindow })}</div>
+      </StyledModal>
+    </Overlay>
+  );
+}
+
+Modal.Open = Open;
+Modal.Window = Window;
+
+export default Modal;
