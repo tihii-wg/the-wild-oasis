@@ -1,8 +1,7 @@
 import styled from "styled-components";
-import { HiOutlineX } from "react-icons/hi";
-import CreateCabinForm from "../features/cabins/CreateCabinForm";
 import { HiXMark } from "react-icons/hi2";
 import { cloneElement, createContext, useContext, useState } from "react";
+import { useOutsideClick } from "../features/cabins/useOutsideClick";
 
 const StyledModal = styled.div`
   position: fixed;
@@ -74,10 +73,12 @@ function Open({ children, open }) {
 
 function Window({ children, name }) {
   const { openName, closeWindow } = useContext(ModalContext);
+  const ref = useOutsideClick(closeWindow);
+
   if (name !== openName) return null;
   return (
     <Overlay>
-      <StyledModal>
+      <StyledModal ref={ref}>
         <Button onClick={closeWindow}>
           <HiXMark />
         </Button>
