@@ -9,7 +9,7 @@ import { useForm } from "react-hook-form";
 import { useCreateCabin } from "./useCreateCabin";
 import { useUpdateCabin } from "./useUpdateCabin";
 
-function CreateCabinForm({ cabinToEdit = {}, setIsEdit, onCloseModal }) {
+function CreateCabinForm({ cabinToEdit = {}, onCloseModal }) {
   const { id: editId, ...newCabinValue } = cabinToEdit;
 
   const { createCabin, isCreating } = useCreateCabin();
@@ -33,7 +33,7 @@ function CreateCabinForm({ cabinToEdit = {}, setIsEdit, onCloseModal }) {
 
     if (isEditSession) {
       updateCabin({ newCabinValue: { ...formData, image }, id: editId });
-      setIsEdit((isEdit) => !isEdit);
+      onCloseModal?.();
     } else {
       createCabin(
         { ...formData, image },
@@ -145,7 +145,7 @@ function CreateCabinForm({ cabinToEdit = {}, setIsEdit, onCloseModal }) {
           Cancel
         </Button>
         <Button disabled={isWorking}>
-          {isEditSession ? "EditCabin" : "Create new cabin"}
+          {isEditSession ? "Edit cabin" : "Create new cabin"}
         </Button>
       </FormRow>
     </Form>

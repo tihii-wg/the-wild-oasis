@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { HiXMark } from "react-icons/hi2";
 import { cloneElement, createContext, useContext, useState } from "react";
 import { useOutsideClick } from "../features/cabins/useOutsideClick";
+import { createPortal } from "react-dom";
 
 const StyledModal = styled.div`
   position: fixed;
@@ -76,7 +77,7 @@ function Window({ children, name }) {
   const ref = useOutsideClick(closeWindow);
 
   if (name !== openName) return null;
-  return (
+  return createPortal(
     <Overlay>
       <StyledModal ref={ref}>
         <Button onClick={closeWindow}>
@@ -84,7 +85,8 @@ function Window({ children, name }) {
         </Button>
         <div>{cloneElement(children, { onCloseModal: closeWindow })}</div>
       </StyledModal>
-    </Overlay>
+    </Overlay>,
+    document.body,
   );
 }
 
