@@ -4,7 +4,6 @@ import CreateCabinForm from "./CreateCabinForm";
 import Modal from "../../ui/Modal";
 import { formatCurrency } from "../../utils/helpers";
 
-import { useState } from "react";
 import { useDeleteCabin } from "./useDeleteCabin";
 import { HiPencil, HiSquare2Stack, HiTrash } from "react-icons/hi2";
 import { useCreateCabin } from "./useCreateCabin";
@@ -70,7 +69,7 @@ function CabinRow({ cabin }) {
   }
 
   return (
-    <TableRow role="row">
+    <Table.Row>
       <Img src={image} />
       <Cabin>{name}</Cabin>
       <div>Fits up to {maxCapacity} quests</div>
@@ -109,7 +108,7 @@ function CabinRow({ cabin }) {
           </Modal.Window>
         </Modal>
       </div>
-    </TableRow>
+    </Table.Row>
   );
 }
 
