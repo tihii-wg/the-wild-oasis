@@ -80,10 +80,11 @@ function Header({ children }) {
 }
 
 function Row({ children }) {
-  return <StyledRow>{children}</StyledRow>;
+  const { columns } = useContext(TableContext);
+  return <StyledRow columns={columns}>{children}</StyledRow>;
 }
 
-function Body(data, render) {
+function Body({ data, render }) {
   return <StyledBody>{data.map(render)}</StyledBody>;
 }
 

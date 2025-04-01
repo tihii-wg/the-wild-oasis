@@ -5,9 +5,16 @@ import Modal from "../../ui/Modal";
 import { formatCurrency } from "../../utils/helpers";
 
 import { useDeleteCabin } from "./useDeleteCabin";
-import { HiPencil, HiSquare2Stack, HiTrash } from "react-icons/hi2";
+import {
+  HiEllipsisVertical,
+  HiPencil,
+  HiSquare2Stack,
+  HiTrash,
+} from "react-icons/hi2";
 import { useCreateCabin } from "./useCreateCabin";
 import ConfirmDelete from "../../ui/Confirmdelete";
+import Table from "../../ui/Table";
+import Menus from "../../ui/Menus";
 
 const TableRow = styled.div`
   display: grid;
@@ -80,25 +87,36 @@ function CabinRow({ cabin }) {
         <span>&mdash;</span>
       )}
       <div>
-        <button onClick={handleCreate}>
-          <HiSquare2Stack />
-        </button>
+        {/* <button onClick={handleCreate}>
+            <HiSquare2Stack />
+            </button> */}
 
         <Modal>
-          <Modal.Open open="edit-cabin">
-            <button>
-              <HiPencil />
-            </button>
-          </Modal.Open>
+          <Menus.Menu>
+            <Menus.Toggle id={id} />
+            <Menus.List id={id}>
+              <Menus.Button onClick={handleCreate}>Duplicate</Menus.Button>
+
+              <Modal.Open open="edit-cabin">
+                {/* <button>
+                  <HiPencil />
+                </button> */}
+                <Menus.Button>Edit</Menus.Button>
+              </Modal.Open>
+
+              <Modal.Open open="delete-cabin">
+                {/* <button>
+                  <HiTrash />
+                </button> */}
+                <Menus.Button icon={<HiTrash />}>Delete</Menus.Button>
+              </Modal.Open>
+            </Menus.List>
+          </Menus.Menu>
+
           <Modal.Window name="edit-cabin">
             <CreateCabinForm cabinToEdit={cabin} />
           </Modal.Window>
 
-          <Modal.Open open="delete-cabin">
-            <button onClick={() => deleteCabin(id)} disabled={isWorking}>
-              <HiTrash />
-            </button>
-          </Modal.Open>
           <Modal.Window name="delete-cabin">
             <ConfirmDelete
               resourceName={name}

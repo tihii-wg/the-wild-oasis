@@ -1,6 +1,10 @@
+import { createContext, useContext, useState } from "react";
+import { createPortal } from "react-dom";
+import { HiEllipsisVertical } from "react-icons/hi2";
 import styled from "styled-components";
+import { useOutsideClick } from "../features/cabins/useOutsideClick";
 
-const StyledMenu = styled.div`
+const Menu = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -60,3 +64,74 @@ const StyledButton = styled.button`
     transition: all 0.3s;
   }
 `;
+
+const MenusContext = createContext();
+
+function Menus({ children }) {
+  const [openId, setopenId] = useState();
+  const [position, setPosition] = useState(null);
+
+  const close = () => setopenId("");
+  const open = setopenId;
+
+  return (
+    <MenusContext.Provider
+      value={{ openId, close, open, position, setPosition }}
+    >
+      {children}
+    </MenusContext.Provider>
+  );
+}
+
+function Toggle({ id }) {
+  const { open, openId, close, setPosition } = useContext(MenusContext);
+
+  function handleToggle(e) {
+    const rect = e.target.closest("button").getBoundingClientRect();
+
+    openId === "" || id !== openId ? open(id) : close();
+
+    setPosition({
+      x: window.innerWidth - rect.x + 5,
+      y: rect.y - 50,
+    });
+  }
+
+  return (
+    <StyledToggle onClick={handleToggle}>
+      <HiEllipsisVertical />
+    </StyledToggle>
+  );
+}
+
+function List({ children, id }) {
+  const { openId, position, close } = useContext(MenusContext);
+  const ref = useOutsideClick(close);
+
+  if (!openId && openId !== id) return null;
+
+  return <StyledList position={position}>{children}</StyledList>;
+}
+
+function Button({ children, onClick, icon }) {
+  const { close } = useContext(MenusContext);
+
+  function onHandleClick() {
+    onClick?.();
+    close();
+  }
+
+  return (
+    <StyledButton onClick={onHandleClick}>
+      {icon}
+      {children}
+    </StyledButton>
+  );
+}
+
+Menus.Menu = Menu;
+Menus.Toggle = Toggle;
+Menus.List = List;
+Menus.Button = Button;
+
+export default Menus;
