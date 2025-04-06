@@ -95,13 +95,15 @@ function CabinRow({ cabin }) {
           <Menus.Menu>
             <Menus.Toggle id={id} />
             <Menus.List id={id}>
-              <Menus.Button onClick={handleCreate}>Duplicate</Menus.Button>
+              <Menus.Button onClick={handleCreate} icon={<HiSquare2Stack />}>
+                Duplicate
+              </Menus.Button>
 
               <Modal.Open open="edit-cabin">
                 {/* <button>
                   <HiPencil />
                 </button> */}
-                <Menus.Button>Edit</Menus.Button>
+                <Menus.Button icon={<HiPencil />}>Edit</Menus.Button>
               </Modal.Open>
 
               <Modal.Open open="delete-cabin">
