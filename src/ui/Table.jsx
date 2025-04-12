@@ -84,8 +84,8 @@ function Row({ children }) {
   return <StyledRow columns={columns}>{children}</StyledRow>;
 }
 
-function Body({ data, render }) {
-  return <StyledBody>{data?.map(render)}</StyledBody>;
+function Body({ data, children }) {
+  return <StyledBody>{children}</StyledBody>;
 }
 
 Table.Header = Header;

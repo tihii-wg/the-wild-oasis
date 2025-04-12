@@ -11,13 +11,23 @@ export function useCabins() {
     queryKey: ["Cabins"],
     queryFn: getCabins,
   });
-
-  let cabins;
-  if (filterValue === "all") cabins = data;
+  // Filter cabins
+  let filteredCabins;
+  if (filterValue === "all") filteredCabins = data;
   if (filterValue === "no-discount")
-    cabins = data?.filter((d) => d.discount === 0);
+    filteredCabins = data?.filter((d) => d.discount === 0);
   if (filterValue === "with-discount")
-    cabins = data?.filter((d) => d.discount > 0);
+    filteredCabins = data?.filter((d) => d.discount > 0);
 
+  // Sort cabinst
+
+  const sortBy = searchParams.get("sortBy") || "startDate-asc";
+
+  const [field, direction] = sortBy.split("-");
+  const modifire = direction === "asc" ? 1 : -1;
+
+  const cabins = filteredCabins;
+  cabins?.sort((a, b) => (a[field] - b[field]) * modifire);
+  console.log(field, direction);
   return { cabins, isLoading };
 }

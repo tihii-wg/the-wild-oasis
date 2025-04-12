@@ -61,7 +61,6 @@ function CabinRow({ cabin }) {
     cabin;
   const { isDeleting, deleteCabin } = useDeleteCabin();
   const { isCreating, createCabin } = useCreateCabin();
-
   const isWorking = isDeleting || isCreating;
 
   function handleCreate() {
@@ -74,7 +73,6 @@ function CabinRow({ cabin }) {
       description,
     });
   }
-
   return (
     <Table.Row>
       <Img src={image} />
@@ -87,33 +85,34 @@ function CabinRow({ cabin }) {
         <span>&mdash;</span>
       )}
       <div>
-        {/* <button onClick={handleCreate}>
-            <HiSquare2Stack />
-            </button> */}
+        <Menus.Menu>
+          <Menus.Toggle id={id} />
+
+          <Menus.List id={id}>
+            <Menus.Button onClick={handleCreate} icon={<HiSquare2Stack />}>
+              Duplicate
+            </Menus.Button>
+
+            <Menus.Button icon={<HiPencil />}>Edit</Menus.Button>
+            <Menus.Button icon={<HiTrash />}>Delete</Menus.Button>
+          </Menus.List>
+        </Menus.Menu>
 
         <Modal>
-          <Menus.Menu>
-            <Menus.Toggle id={id} />
-            <Menus.List id={id}>
-              <Menus.Button onClick={handleCreate} icon={<HiSquare2Stack />}>
-                Duplicate
-              </Menus.Button>
+          <button onClick={handleCreate}>
+            <HiSquare2Stack />
+          </button>
+          <Modal.Open open="edit-cabin">
+            <button>
+              <HiPencil />
+            </button>
+          </Modal.Open>
 
-              <Modal.Open open="edit-cabin">
-                {/* <button>
-                  <HiPencil />
-                </button> */}
-                <Menus.Button icon={<HiPencil />}>Edit</Menus.Button>
-              </Modal.Open>
-
-              <Modal.Open open="delete-cabin">
-                {/* <button>
-                  <HiTrash />
-                </button> */}
-                <Menus.Button icon={<HiTrash />}>Delete</Menus.Button>
-              </Modal.Open>
-            </Menus.List>
-          </Menus.Menu>
+          <Modal.Open open="delete-cabin">
+            <button>
+              <HiTrash />
+            </button>
+          </Modal.Open>
 
           <Modal.Window name="edit-cabin">
             <CreateCabinForm cabinToEdit={cabin} />

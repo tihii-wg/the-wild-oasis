@@ -11,6 +11,7 @@ function CabinTable() {
 
   if (isLoading) return <Spinner />;
 
+  // console.log(cabins);
   return (
     <Menus>
       <Table columns="0.6fr 1.8fr 2.2fr 1fr 1fr 1fr">
@@ -22,10 +23,11 @@ function CabinTable() {
           <div>Discount</div>
           <div></div>
         </Table.Header>
-        <Table.Body
-          data={cabins}
-          render={(cabin) => <CabinRow cabin={cabin} key={cabin.id} />}
-        />
+        <Table.Body>
+          {cabins.map((cabin) => (
+            <CabinRow cabin={cabin} key={cabin.id} />
+          ))}
+        </Table.Body>
       </Table>
     </Menus>
   );

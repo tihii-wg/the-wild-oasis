@@ -77,6 +77,7 @@ function Window({ children, name }) {
   const ref = useOutsideClick(closeWindow);
 
   if (name !== openName) return null;
+
   return createPortal(
     <Overlay>
       <StyledModal ref={ref}>
