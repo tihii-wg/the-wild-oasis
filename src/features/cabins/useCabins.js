@@ -22,12 +22,17 @@ export function useCabins() {
   // Sort cabinst
 
   const sortBy = searchParams.get("sortBy") || "startDate-asc";
-
   const [field, direction] = sortBy.split("-");
-  const modifire = direction === "asc" ? 1 : -1;
+  const modifire = direction === "asc" ? true : false;
 
-  const cabins = filteredCabins;
-  cabins?.sort((a, b) => (a[field] - b[field]) * modifire);
-  console.log(field, direction);
+  let cabins = filteredCabins;
+
+  cabins?.sort(function (a, b) {
+    let dir = modifire
+      ? a[field].toLowerCase() < b[field].toLowerCase()
+      : a[field].toLowerCase() > b[field].toLowerCase();
+    if (dir) return -1;
+  });
+
   return { cabins, isLoading };
 }
