@@ -68,7 +68,7 @@ const StyledButton = styled.button`
 const MenusContext = createContext();
 
 function Menus({ children }) {
-  const [openId, setOpenId] = useState();
+  const [openId, setOpenId] = useState("");
   const [position, setPosition] = useState(null);
 
   const close = () => setOpenId("");
@@ -111,7 +111,7 @@ function List({ children, id }) {
   const { openId, position, close } = useContext(MenusContext);
   const ref = useOutsideClick(close);
 
-  if (!openId && openId !== id) return null;
+  if (openId !== id) return null;
   return <StyledList position={position}>{children}</StyledList>;
 }
 

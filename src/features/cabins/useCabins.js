@@ -8,9 +8,10 @@ export function useCabins() {
   const filterValue = searchParams.get("discount") || "all";
 
   const { data, isLoading } = useQuery({
-    queryKey: ["Cabins"],
+    queryKey: ["cabins"],
     queryFn: getCabins,
   });
+
   // Filter cabins
   let filteredCabins;
   if (filterValue === "all") filteredCabins = data;
@@ -28,9 +29,7 @@ export function useCabins() {
   let cabins = filteredCabins;
 
   cabins?.sort(function (a, b) {
-    let dir = modifire
-      ? a[field].toLowerCase() < b[field].toLowerCase()
-      : a[field].toLowerCase() > b[field].toLowerCase();
+    let dir = modifire ? a[field] < b[field] : a[field] > b[field];
     if (dir) return -1;
   });
 

@@ -30,8 +30,9 @@ const TableHeader = styled.header`
 
 function CabinTable() {
   const { cabins, isLoading } = useCabins();
-  if (isLoading) return <Spinner />;
+  console.log(cabins, isLoading);
 
+  if (isLoading) return <Spinner />;
   return (
     <Table role="table">
       <TableHeader role="row">

@@ -44,7 +44,7 @@ function BookingRow({
     numGuests,
     totalPrice,
     status,
-    guests: { fullName: guestName, email },
+    guest: { fullName: guestName, email },
     cabins: { name: cabinName },
   },
 }) {
@@ -53,7 +53,6 @@ function BookingRow({
     "checked-in": "green",
     "checked-out": "silver",
   };
-
   return (
     <Table.Row>
       <Cabin>{cabinName}</Cabin>
