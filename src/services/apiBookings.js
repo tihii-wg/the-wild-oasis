@@ -16,12 +16,18 @@ export async function getBooking(id) {
   return data;
 }
 
-export async function getBookings() {
-  const { data, error } = await supabase
+export async function getBookings({ filter, sortBy }) {
+  const query = supabase
     .from("bookings")
     .select(
-      "id,created_at,startDate,endDate,numNights,numGuests,totalPrice,status,cabins(name),guest(fullName,email)",
+      "id,created_at,startDate,endDate,numNights,numGuests,totalPrice,status,cabins(name),guests(fullName,email)",
     );
+  //Filter
+  if (filter !== null) query[filter.method || "eq"](filter.field, filter.value);
+
+  //Sort
+
+  const { data, error } = await query;
 
   if (error) {
     console.log(error);

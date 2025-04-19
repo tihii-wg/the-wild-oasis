@@ -21,6 +21,7 @@ const Label = styled.span`
 `;
 
 function DataItem({ icon, label, children }) {
+  console.log(label);
   return (
     <StyledDataItem>
       <Label>

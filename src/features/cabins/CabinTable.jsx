@@ -9,7 +9,10 @@ import Empty from "../../ui/Empty";
 
 function CabinTable() {
   const { cabins, isLoading } = useCabins();
-  if (isLoading) return <Spinner />;
+  {
+    if (isLoading) return <Spinner />;
+    if (!cabins?.length) return <Empty resource="Cabins" />;
+  }
 
   return (
     <Menus>
@@ -22,7 +25,6 @@ function CabinTable() {
           <div>Discount</div>
           <div></div>
         </Table.Header>
-        {!cabins?.length && <Empty resource="Cabins" />}
 
         <Table.Body
           data={cabins}

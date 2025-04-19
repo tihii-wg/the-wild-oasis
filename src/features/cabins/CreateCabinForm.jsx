@@ -11,7 +11,6 @@ import { useUpdateCabin } from "./useUpdateCabin";
 
 function CreateCabinForm({ cabinToEdit = {}, onCloseModal }) {
   const { id: editId, ...newCabinValue } = cabinToEdit;
-  console.log(cabinToEdit);
   const { createCabin, isCreating } = useCreateCabin();
   const { updateCabin, isUpdating } = useUpdateCabin();
   const isEditSession = Boolean(editId);
@@ -44,9 +43,6 @@ function CreateCabinForm({ cabinToEdit = {}, onCloseModal }) {
     }
   }
   const isWorking = isCreating || isUpdating;
-  // function onError(errors) {
-  //   console.log(errors);
-  // }
 
   return (
     <Form

@@ -8,8 +8,9 @@ import { useBookings } from "./useBookings";
 
 function BookingTable() {
   const { bookings, isLoading } = useBookings();
+
   if (isLoading) return <Spinner />;
-  // const bookings = [];
+
   if (!bookings?.length) return <Empty resource="Booking" />;
 
   return (
