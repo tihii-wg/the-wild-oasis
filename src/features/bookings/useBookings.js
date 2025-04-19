@@ -7,19 +7,23 @@ export function useBookings() {
   //filter
   const filterValue = searcParams.get("status");
 
-  const filter =
+  let filter =
     !filterValue || filterValue === "all"
       ? null
       : { field: "status", value: filterValue };
   // status,value
 
-  const sort = searcParams.get("sortBy");
-  const sortBy = !sort || "starDate-desc";
-  console.log(sort);
+  //Sort
+
+  const sortByRaw = searcParams.get("sortBy") || "startDate-desc";
+
+  const [field, direction] = sortByRaw.split("-");
+
+  let sortBy = { field, direction, method: "order" };
 
   const { data: bookings, isLoading } = useQuery({
-    queryKey: ["bookings", filter],
-    queryFn: () => getBookings({ filter }),
+    queryKey: ["bookings", filter, sortBy],
+    queryFn: () => getBookings({ filter, sortBy }),
   });
 
   return { bookings, isLoading };

@@ -17,15 +17,20 @@ export async function getBooking(id) {
 }
 
 export async function getBookings({ filter, sortBy }) {
-  const query = supabase
+  let query = supabase
     .from("bookings")
     .select(
       "id,created_at,startDate,endDate,numNights,numGuests,totalPrice,status,cabins(name),guests(fullName,email)",
     );
   //Filter
-  if (filter !== null) query[filter.method || "eq"](filter.field, filter.value);
+  if (filter) query = query[filter.method || "eq"](filter.field, filter.value);
 
   //Sort
+
+  if (sortBy)
+    query = query[sortBy.method || "order"](sortBy.field, {
+      ascending: sortBy.direction === "asc" ? true : false,
+    });
 
   const { data, error } = await query;
 
