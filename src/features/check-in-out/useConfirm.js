@@ -10,11 +10,10 @@ export function useConfirm() {
         isPaid: true,
       }),
     onSuccess: (data) => {
-      toast.success(`Booking ${data.id} has been confirmed.`);
-      queryClient.invalidateQueries({ active: true });
+      toast.success(`Booking ${data.id} was succesfully paid`);
+      queryClient.invalidateQueries({ queryKey: ["booking"] });
     },
-    onError: () => toast.error("Error on confirming booking"),
+    onError: () => toast.error("Error with paing booking "),
   });
-
   return { confirm, isConfirming };
 }
