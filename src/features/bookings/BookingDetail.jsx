@@ -12,6 +12,7 @@ import { useMoveBack } from "../../hooks/useMoveBack";
 import { useBooking } from "./useBooking";
 import Spinner from "../../ui/Spinner";
 import { useNavigate } from "react-router-dom";
+import CheckoutButton from "../check-in-out/CheckoutButton";
 
 const HeadingGroup = styled.div`
   display: flex;
@@ -47,6 +48,9 @@ function BookingDetail() {
       <BookingDataBox booking={booking} />
 
       <ButtonGroup>
+        {status === "checked-in" && (
+          <CheckoutButton>Checkin out</CheckoutButton>
+        )}
         {status === "unconfirmed" && (
           <Button onClick={() => navigate(`/checkin/${bookingId}`)}>
             Chekin in
