@@ -13,10 +13,10 @@ import { formatCurrency } from "../../utils/helpers";
 import { useMoveBack } from "../../hooks/useMoveBack";
 import { useBooking } from "../bookings/useBooking";
 import { useEffect, useState } from "react";
-import { useConfirm } from "./useConfirm";
 import { useCheckin } from "./useCheckin";
-import { useBreakfast } from "./useBreakfast";
+import { useBreakfast } from "../bookings/useBreakfast";
 import { useSettings } from "../settings/useSettings";
+import { useConfirm } from "../bookings/useConfirmPaiment";
 
 const Box = styled.div`
   /* Box */

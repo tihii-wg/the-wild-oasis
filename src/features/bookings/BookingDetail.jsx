@@ -1,19 +1,21 @@
+import { HiTrash } from "react-icons/hi";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-import BookingDataBox from "./BookingDataBox";
-import Row from "../../ui/Row";
-import Heading from "../../ui/Heading";
-import Tag from "../../ui/Tag";
-import ButtonGroup from "../../ui/ButtonGroup";
-import Button from "../../ui/Button";
-import ButtonText from "../../ui/ButtonText";
-
 import { useMoveBack } from "../../hooks/useMoveBack";
-import { useBooking } from "./useBooking";
+import Button from "../../ui/Button";
+import ButtonGroup from "../../ui/ButtonGroup";
+import ButtonText from "../../ui/ButtonText";
+import ConfirmDelete from "../../ui/ConfirmDelete";
+import Heading from "../../ui/Heading";
+import Modal from "../../ui/Modal";
+import Row from "../../ui/Row";
 import Spinner from "../../ui/Spinner";
-import { useNavigate } from "react-router-dom";
-import CheckoutButton from "../check-in-out/CheckoutButton";
+import Tag from "../../ui/Tag";
 import { useCheckout } from "../check-in-out/useCheckout";
+import BookingDataBox from "./BookingDataBox";
+import { useBooking } from "./useBooking";
+import { useDeleteBooking } from "./useDeleteBooking";
 
 const HeadingGroup = styled.div`
   display: flex;
@@ -22,10 +24,11 @@ const HeadingGroup = styled.div`
 `;
 
 function BookingDetail() {
-  const { booking, isLoading } = useBooking();
-  const { checkout, isCheckingout } = useCheckout();
-  const navigate = useNavigate();
   const moveBack = useMoveBack();
+  const { booking, isLoading } = useBooking();
+  const { removeBooking } = useDeleteBooking();
+  const { checkout } = useCheckout();
+  const navigate = useNavigate();
 
   if (isLoading) return <Spinner />;
 
@@ -65,6 +68,19 @@ function BookingDetail() {
             Chekin in
           </Button>
         )}
+
+        <Modal>
+          <Modal.Open open="delete">
+            <Button icon={<HiTrash />}>Delete booking</Button>
+          </Modal.Open>
+          <Modal.Window name="delete">
+            <ConfirmDelete
+              resourceName="booking"
+              onConfirm={() => removeBooking(bookingId, navigate(-1))}
+            />
+          </Modal.Window>
+        </Modal>
+
         <Button variation="secondary" onClick={moveBack}>
           Back
         </Button>
