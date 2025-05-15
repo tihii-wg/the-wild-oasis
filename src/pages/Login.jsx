@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 import LoginForm from "../features/authentication/LoginForm";
@@ -17,14 +16,11 @@ const LoginLayout = styled.main`
 
 function Login() {
   return (
-    <>
-      <Link to="/dashboard">Home</Link>
-      <LoginLayout>
-        <Logo />
-        <Heading as="h4">Log in to your account</Heading>
-        <LoginForm />
-      </LoginLayout>
-    </>
+    <LoginLayout>
+      <Logo />
+      <Heading as="h4">Log in to your account</Heading>
+      <LoginForm />
+    </LoginLayout>
   );
 }
 
