@@ -4,20 +4,20 @@ import Button from "../../ui/Button";
 import Form from "../../ui/Form";
 import FormRow from "../../ui/FormRow";
 import Input from "../../ui/Input";
-import { useSingup } from "./useSingup";
+import { useSignup } from "./useSignup";
 
 // Email regex: /\S+@\S+\.\S+/
 
 function SignupForm() {
-  const { singup, isLoading } = useSingup();
-  const { register, formState, getValues, handleSubmit, reset } = useForm();
+  const { signup, isLoading } = useSignup();
+  const { register, formState, handleSubmit, getValues, reset } = useForm();
   const { errors } = formState;
 
   function onSubmit({ fullName, email, password }) {
-    singup(
-      { fullName, email, password },
+    signup(
+      { email, fullName, password },
       {
-        onSuccess: () => reset(),
+        onSettled: () => reset(),
       },
     );
   }
@@ -26,25 +26,21 @@ function SignupForm() {
     <Form onSubmit={handleSubmit(onSubmit)}>
       <FormRow label="Full name" error={errors?.fullName?.message}>
         <Input
-          disabled={isLoading}
           type="text"
           id="fullName"
-          {...register("fullName", {
-            required: "This field is required",
-          })}
+          {...register("fullName", { required: "This field is required." })}
         />
       </FormRow>
 
       <FormRow label="Email address" error={errors?.email?.message}>
         <Input
-          disabled={isLoading}
           type="email"
           id="email"
           {...register("email", {
-            required: "This field is required",
+            required: "This field is required.",
             pattern: {
               value: /\S+@\S+\.\S+/,
-              message: "Password need to be match",
+              message: "Input validate email",
             },
           })}
         />
@@ -55,14 +51,13 @@ function SignupForm() {
         error={errors?.password?.message}
       >
         <Input
-          disabled={isLoading}
           type="password"
           id="password"
           {...register("password", {
-            required: "This field is required",
+            required: "This field is required.",
             minLength: {
               value: 8,
-              message: "Password must be min 8 characters.",
+              message: "Password need to be min 8 characters.",
             },
           })}
         />
@@ -70,11 +65,10 @@ function SignupForm() {
 
       <FormRow label="Repeat password" error={errors?.passwordConfirm?.message}>
         <Input
-          disabled={isLoading}
           type="password"
           id="passwordConfirm"
           {...register("passwordConfirm", {
-            required: "This field is required",
+            required: "This field is required.",
             validate: (value) =>
               value === getValues().password || "Password need to be match",
           })}
