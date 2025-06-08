@@ -1,14 +1,21 @@
+import DashboardFilter from "../features/dashboard/DashboardFilter";
+import DashboardLayout from "../features/dashboard/DashboardLayout";
 import Heading from "../ui/Heading";
 import Row from "../ui/Row";
 
 function Dashboard() {
   return (
-    <Row type="horizontal">
-      <Heading as="h1">Dashboard</Heading>
-      <div>
-        <p>TEST</p>
-      </div>
-    </Row>
+    <>
+      <Row type="horizontal">
+        <Heading as="h1">Dashboard</Heading>
+        <div>
+          <DashboardFilter />
+        </div>
+      </Row>
+      <Row>
+        <DashboardLayout />
+      </Row>
+    </>
   );
 }
 
