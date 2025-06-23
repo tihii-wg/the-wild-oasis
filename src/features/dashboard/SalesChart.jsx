@@ -11,6 +11,13 @@ import {
   YAxis,
 } from "recharts";
 import { useDarkMode } from "../../context/DarkModeContext";
+import {
+  eachDayOfInterval,
+  format,
+  isDate,
+  isSameDay,
+  subDays,
+} from "date-fns";
 
 const StyledSalesChart = styled(DashboardBox)`
   grid-column: 1 / -1;
@@ -54,8 +61,32 @@ const fakeData = [
   { label: "Feb 06", totalSales: 1450, extrasSales: 400 },
 ];
 
-function SalesChart() {
+function SalesChart({ numDays, bookings }) {
   const { isDarkMode } = useDarkMode();
+
+  const allDays = eachDayOfInterval({
+    start: subDays(new Date(), numDays - 1),
+    end: new Date(),
+  });
+
+  const data = allDays.map((date) => {
+    return {
+      label: format(date, "MMM dd"),
+      totalSales: bookings
+        .filter((booking) =>
+          isSameDay(new Date(date), new Date(booking.created_at)),
+        )
+        .reduce((acc, cur) => acc + cur.totalPrice, 0),
+      extrasSales: bookings
+        .filter((booking) =>
+          isSameDay(new Date(date), new Date(booking.created_at)),
+        )
+        .reduce((acc, cur) => acc + cur.extrasPrice, 0),
+    };
+  });
+
+  console.log(data);
+
   const colors = isDarkMode
     ? {
         totalSales: { stroke: "#4f46e5", fill: "#4f46e5" },
@@ -74,8 +105,12 @@ function SalesChart() {
       <Heading as="h2">Sales</Heading>
 
       <ResponsiveContainer width="100%" height={300}>
-        <AreaChart width={700} height={200} data={fakeData}>
-          <XAxis dataKey="label" />
+        <AreaChart width={700} height={200} data={data}>
+          <XAxis
+            dataKey="label"
+            tick={{ fill: colors.text }}
+            tickLine={{ stroke: colors.text }}
+          />
           <YAxis
             unit="$"
             tick={{ fill: colors.text }}
@@ -95,8 +130,8 @@ function SalesChart() {
           <Area
             type="monotone"
             dataKey="extrasSales"
-            stroke={colors.totalSales.stroke}
-            fill={colors.totalSales.fill}
+            stroke={colors.extrasSales.stroke}
+            fill={colors.extrasSales.fill}
             strokeWidth={2}
             name="Extras sales"
             unit="$"
