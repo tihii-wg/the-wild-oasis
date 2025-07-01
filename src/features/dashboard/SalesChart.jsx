@@ -85,8 +85,6 @@ function SalesChart({ numDays, bookings }) {
     };
   });
 
-  console.log(data);
-
   const colors = isDarkMode
     ? {
         totalSales: { stroke: "#4f46e5", fill: "#4f46e5" },
@@ -102,7 +100,10 @@ function SalesChart({ numDays, bookings }) {
       };
   return (
     <StyledSalesChart>
-      <Heading as="h2">Sales</Heading>
+      <Heading as="h2">
+        Sales from {format(allDays.at(0), "MMM dd")} &mdash;
+        {format(allDays.at(-1), "MMM dd")}
+      </Heading>
 
       <ResponsiveContainer width="100%" height={300}>
         <AreaChart width={700} height={200} data={data}>

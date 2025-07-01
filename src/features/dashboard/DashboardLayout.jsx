@@ -7,6 +7,7 @@ import { useSearchParams } from "react-router-dom";
 import { useCabins } from "../cabins/useCabins";
 import { Line, LineChart } from "recharts";
 import SalesChart from "./SalesChart";
+import DurationChart from "./DurationChart";
 
 const StyledDashboardLayout = styled.div`
   display: grid;
@@ -14,6 +15,7 @@ const StyledDashboardLayout = styled.div`
   grid-template-rows: auto 34rem auto;
   gap: 2.4rem;
 `;
+
 function DashboardLayout() {
   const { cabins, isLoading: isLoading3 } = useCabins();
   const { bookings, isLoading: isLoading1 } = useRecentBookings();
@@ -42,7 +44,7 @@ function DashboardLayout() {
         checkins={checkins}
       />
       <div>ldfjvdlkfj</div>
-      <div>ldfjvdlkfj</div>
+      <DurationChart confirmedStays={confirmedStays} />
       <SalesChart numDays={numDays} bookings={bookings} />
     </StyledDashboardLayout>
   );
