@@ -36,7 +36,7 @@ const startDataLight = [
   },
   {
     duration: "2 nights",
-    value: 4,
+    value: 0,
     color: "#f97316",
   },
   {
@@ -46,7 +46,7 @@ const startDataLight = [
   },
   {
     duration: "4-5 nights",
-    value: 2,
+    value: 0,
     color: "#84cc16",
   },
   {
@@ -56,7 +56,7 @@ const startDataLight = [
   },
   {
     duration: "8-14 nights",
-    value: 7,
+    value: 0,
     color: "#14b8a6",
   },
   {
@@ -66,7 +66,7 @@ const startDataLight = [
   },
   {
     duration: "21+ nights",
-    value: 1,
+    value: 0,
     color: "#a855f7",
   },
 ];
@@ -144,9 +144,9 @@ function prepareData(startData, stays) {
 function DurationChart({ confirmedStays }) {
   const { isDarkMode } = useDarkMode();
 
-  const starterData = isDarkMode ? startDataDark : startDataLight;
+  const startData = isDarkMode ? startDataDark : startDataLight;
 
-  const data = prepareData(starterData, confirmedStays);
+  const data = prepareData(startData, confirmedStays);
 
   return (
     <ChartBox>

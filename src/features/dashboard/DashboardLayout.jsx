@@ -8,6 +8,7 @@ import { useCabins } from "../cabins/useCabins";
 import { Line, LineChart } from "recharts";
 import SalesChart from "./SalesChart";
 import DurationChart from "./DurationChart";
+import TodayActivity from "../check-in-out/TodayActivity";
 
 const StyledDashboardLayout = styled.div`
   display: grid;
@@ -43,7 +44,7 @@ function DashboardLayout() {
         numBookings={numBookings}
         checkins={checkins}
       />
-      <div>ldfjvdlkfj</div>
+      <TodayActivity />
       <DurationChart confirmedStays={confirmedStays} />
       <SalesChart numDays={numDays} bookings={bookings} />
     </StyledDashboardLayout>
